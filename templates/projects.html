@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>قائمة المشاريع</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9966 0%, rgb(29, 112, 221) 100%);
+            font-family: 'Cairo', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .main-container {
+            background: #fff;
+            width: 100%;
+            max-width: 900px;
+            margin: 40px 16px;
+            padding: 38px 28px 30px 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(255, 94, 98, 0.13), 0 1.5px 8px rgba(0,0,0,0.07);
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h2 {
+            color: rgb(29, 112, 221);
+            margin-bottom: 22px;
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+            background: #f7faff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px #ff5e621a;
+        }
+        th, td {
+            padding: 14px 10px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: right;
+            font-size: 1.08rem;
+        }
+        th {
+            background: #f0f4ff;
+            color: rgb(29, 112, 221);
+            font-weight: bold;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover {
+            background: #fff3e6;
+            transition: background 0.2s;
+        }
+        a.button {
+            background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+            color: #fff;
+            padding: 8px 22px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 2px 8px #ff5e621a;
+            display: inline-block;
+        }
+        a.button:hover {
+            background: linear-gradient(90deg, rgb(29, 112, 221) 0%, #ff9966 100%);
+            transform: scale(1.05);
+        }
+        .add-btn {
+            display: block;
+            width: 100%;
+            max-width: 220px;
+            margin: 0 auto;
+            margin-top: 18px;
+            text-align: center;
+        }
+        @media (max-width: 700px) {
+            .main-container {
+                padding: 18px 2vw 18px 2vw;
+                max-width: 98vw;
+            }
+            table, th, td {
+                font-size: 0.98rem;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 10px 2vw 10px 2vw;
+            }
+            table, th, td {
+                font-size: 0.93rem;
+                padding: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <h2>قائمة المشاريع</h2>
+        <table>
+            <tr>
+                <th>العنوان</th>
+                <th>الوصف</th>
+                <th>إجراءات</th>
+            </tr>
+            {% for project in projects %}
+            <tr>
+                <td>{{ project.title }}</td>
+                <td>{{ project.description }}</td>
+                <td>
+                    <a href="{{ url_for('project_detail', project_id=project.id) }}" class="button">عرض</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('add_project') }}" class="button add-btn">➕ إضافة مشروع جديد</a>
+    </div>
+</body>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>إضافة مهمة</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9966 0%, rgb(29, 112, 221) 100%);
+            font-family: 'Cairo', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-card {
+            background: #fff;
+            max-width: 420px;
+            width: 100%;
+            margin: 60px 16px;
+            padding: 36px 28px 28px 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(255, 94, 98, 0.13);
+            text-align: right;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        h2 {
+            color: rgb(29, 112, 221);
+            margin-bottom: 22px;
+            font-size: 1.7rem;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 10px;
+            margin-bottom: 18px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 7px;
+            background: #f7faff;
+            font-size: 1rem;
+            transition: border 0.2s;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: rgb(29, 112, 221);
+            outline: none;
+            background: #fff;
+        }
+        button {
+            background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+            color: #fff;
+            border: none;
+            padding: 12px 36px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 16px rgba(255, 94, 98, 0.13);
+            margin-top: 8px;
+            width: 100%;
+        }
+        button:hover {
+            background: linear-gradient(90deg, rgb(29, 112, 221) 0%, #ff9966 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+    </style>
+</head>
+<body>
+    <div class="form-card">
+        <h2>إضافة مهمة جديدة</h2>
+        <form method="post">
+            <label>العنوان:</label>
+            <input type="text" name="title" required>
+            <label>الوصف:</label>
+            <textarea name="description"></textarea>
+            <label>تاريخ التسليم:</label>
+            <input type="text" name="due_date" placeholder="مثال: 2025-06-21" required>
+            <label>الأولوية:</label>
+            <select name="priority" required>
+                <option value="عالية">عالية</option>
+                <option value="متوسطة">متوسطة</option>
+                <option value="منخفضة">منخفضة</option>
+            </select>
+            <label>تعيين إلى:</label>
+            <select name="assigned_to" required>
+                <option value="">-- اختر مستخدم --</option>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">إضافة المهمة</button>
+        </form>
+    </div>
+</body>

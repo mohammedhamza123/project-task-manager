@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>تسجيل الدخول</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9966 0%, rgb(29, 112, 221) 100%);
+            font-family: 'Cairo', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-card {
+            background: #fff;
+            width: 100%;
+            max-width: 370px;
+            margin: 40px 16px;
+            padding: 38px 28px 30px 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 32px rgba(255, 94, 98, 0.13), 0 1.5px 8px rgba(0,0,0,0.07);
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .logo img {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px #ff5e6240;
+        }
+        h2 {
+            color: rgb(29, 112, 221);
+            margin-bottom: 18px;
+            font-size: 1.7rem;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        .input-group {
+            margin-bottom: 18px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 13px 12px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f7faff;
+            font-size: 1rem;
+            transition: border 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: rgb(29, 112, 221);
+            outline: none;
+            background: #fff;
+            box-shadow: 0 0 0 2px #ff5e6230;
+        }
+        button {
+            background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+            color: #fff;
+            border: none;
+            padding: 13px 0;
+            border-radius: 8px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(255, 94, 98, 0.13);
+            margin-top: 8px;
+            width: 100%;
+        }
+        button:hover {
+            background: linear-gradient(90deg, rgb(29, 112, 221) 0%, #ff9966 100%);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 24px rgba(255, 94, 98, 0.18);
+        }
+        .links {
+            margin-top: 18px;
+            text-align: center;
+        }
+        .links a {
+            color:rgb(29, 112, 221);
+            text-decoration: none;
+            font-size: 1rem;
+            margin: 0 6px;
+            transition: color 0.2s;
+        }
+        .links a:hover {
+            color: #110a07;
+            text-decoration: underline;
+        }
+        @media (max-width: 480px) {
+            .form-card {
+                padding: 26px 8vw 22px 8vw;
+                max-width: 98vw;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form class="form-card" method="post" autocomplete="off">
+        <div class="logo">
+            <img src="https://img.icons8.com/fluency/96/lock-2.png" alt="login">
+        </div>
+        <h2>تسجيل الدخول</h2>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div style="background:#ffeaea;color:rgb(29, 112, 221);padding:10px 0 8px 0;border-radius:7px;text-align:center;margin-bottom:10px;font-weight:bold;">
+              {{ messages[0] }}
+            </div>
+          {% endif %}
+        {% endwith %}
+        <div class="input-group">
+            <label>اسم المستخدم:</label>
+            <input type="text" name="username" required autocomplete="username">
+        </div>
+        <div class="input-group">
+            <label>كلمة المرور:</label>
+            <input type="password" name="password" required autocomplete="current-password">
+        </div>
+        <button type="submit">دخول</button>
+        <div class="links">
+            <span>ليس لديك حساب؟</span>
+            <a href="{{ url_for('register') }}">تسجيل جديد</a>
+        </div>
+    </form>
+</body>
+</html>

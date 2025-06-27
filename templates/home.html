@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>الرئيسية</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9966 0%, rgb(29, 112, 221) 100%);
+            font-family: 'Cairo', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 1.2s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .main-card {
+            background: #fff;
+            width: 100%;
+            max-width: 420px;
+            margin: 40px 16px;
+            padding: 38px 28px 30px 28px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(255, 94, 98, 0.13), 0 1.5px 8px rgba(0,0,0,0.07);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .logo img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px #ff5e6240;
+        }
+        h1 {
+            color: rgb(29, 112, 221);
+            margin-bottom: 10px;
+            font-size: 2.1rem;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+        p {
+            color: #444;
+            font-size: 1.15rem;
+            margin-bottom: 24px;
+        }
+        .actions {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 10px;
+        }
+        a.button {
+            background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+            color: #fff;
+            padding: 13px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.13rem;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 16px rgba(255, 94, 98, 0.13);
+            width: 100%;
+            display: block;
+        }
+        a.button:hover {
+            background: linear-gradient(90deg, rgb(29, 112, 221) 0%, #ff9966 100%);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 24px rgba(255, 94, 98, 0.18);
+        }
+        @media (max-width: 480px) {
+            .main-card {
+                padding: 26px 6vw 22px 6vw;
+                max-width: 98vw;
+            }
+            h1 {
+                font-size: 1.3rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-card">
+        <div class="logo">
+            <img src="https://img.icons8.com/fluency/96/project.png" alt="logo">
+        </div>
+        <h1>مرحبًا بك في نظام إدارة المشاريع والمهام</h1>
+        <p>نظام احترافي لإدارة مشاريعك ومهامك بسهولة وفعالية.<br>ابدأ الآن!</p>
+        <div class="actions">
+            <a href="{{ url_for('login') }}" class="button">تسجيل الدخول</a>
+            <a href="{{ url_for('register') }}" class="button">تسجيل جديد</a>
+        </div>
+    </div>
+</body>
+</html>

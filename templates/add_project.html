@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>إضافة مشروع</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(135deg, #ff9966 0%, rgb(29, 112, 221) 100%);
+            font-family: 'Cairo', Arial, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            direction: rtl;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .appbar {
+            width: 100vw;
+            background: linear-gradient(90deg, #3c85e4 0%, #ffa75e 100%);
+            color: #fff;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 10;
+            box-shadow: 0 2px 12px #0d38881a;
+            padding-right: 18px;
+            box-sizing: border-box;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: background 0.3s;
+
+        }
+        .appbar a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 1.13rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: color 0.2s;
+            
+        }
+        .appbar a:hover {
+            color: #192c4e;
+            text-decoration: underline;
+            animation: pulse 1s infinite;
+            animation-timing-function: ease-in-out;
+        }
+        .appbar a:hover {
+            color: #192c4e;
+            text-decoration: underline;
+            animation: pulse 1s infinite;
+            animation-timing-function: ease-in-out;
+
+        }
+        .form-card {
+            background: #fff;
+            max-width: 430px;
+            width: 100%;
+            margin: 90px 16px 60px 16px;
+            padding: 38px 28px 30px 28px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(255, 94, 98, 0.13);
+            text-align: right;
+            animation: fadeIn 1s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(40px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .flash-message {
+            background: #e0ffe0;
+            color: #257a1c;
+            border: 1px solid #b2e6b2;
+            border-radius: 7px;
+            padding: 12px;
+            margin-bottom: 18px;
+            text-align: center;
+            font-weight: bold;
+        }
+        h2 {
+            color: rgb(29, 112, 221);
+            margin-bottom: 22px;
+            font-size: 1.7rem;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1.07rem;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 13px 11px;
+            margin-bottom: 18px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            background: #f7faff;
+            font-size: 1rem;
+            transition: border 0.2s;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: rgb(29, 112, 221);
+            outline: none;
+            background: #fff;
+        }
+        select[multiple] {
+            height: 110px;
+            background: #f7faff;
+            cursor: pointer;
+        }
+        .note {
+            color: #888;
+            font-size: 0.97rem;
+            margin-bottom: 8px;
+            display: block;
+        }
+        button {
+            background: linear-gradient(90deg, #ff9966 0%, #ff5e62 100%);
+            color: #fff;
+            border: none;
+            padding: 13px 0;
+            border-radius: 8px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 4px 16px rgba(255, 94, 98, 0.13);
+            margin-top: 8px;
+            width: 100%;
+        }
+        button:hover {
+            background: linear-gradient(90deg, rgb(29, 112, 221) 0%, #ff9966 100%);
+            transform: translateY(-2px) scale(1.03);
+        }
+        @media (max-width: 600px) {
+            .form-card {
+                padding: 18px 4vw 18px 4vw;
+                margin: 80px 4vw 30px 4vw;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="appbar">
+        <a href="{{ url_for('admin_dashboard') }}">
+            <span style="font-size:1.4em;">&#8592;</span>
+            الرجوع للصفحة الرئيسية
+        </a>
+    </div>
+    <div class="form-card">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="flash-message">
+              {{ messages[0] }}
+            </div>
+          {% endif %}
+        {% endwith %}
+        <h2>إضافة مشروع جديد</h2>
+        <form method="post">
+            <label>العنوان:</label>
+            <input type="text" name="title" required>
+            <label>الوصف:</label>
+            <textarea name="description"></textarea>
+            <label>إضافة أعضاء للمشروع:</label>
+            <span class="note">يمكنك اختيار أكثر من عضو بالضغط على Ctrl أثناء التحديد</span>
+            <select name="users" multiple required>
+                {% for user in users %}
+                    <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">إضافة</button>
+        </form>
+    </div>
+</body>
+</html>
