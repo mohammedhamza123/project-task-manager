@@ -14,6 +14,12 @@
                 {% if current_user.is_authenticated %}
                     <a href="{{ url_for('projects') }}">المشاريع</a>
                     <a href="{{ url_for('my_tasks') }}">مهامي</a>
+                    <a href="{{ url_for('completed_tasks') }}">المهام المنجزة</a>
+                    {% if current_user.is_admin %}
+                        <a href="{{ url_for('admin_dashboard') }}">لوحة الإدارة</a>
+                        <a href="{{ url_for('all_users') }}">المستخدمين</a>
+                        <a href="{{ url_for('all_submissions') }}">التسليمات</a>
+                    {% endif %}
                     <span class="user">مرحباً {{ current_user.username }}</span>
                     <a href="{{ url_for('logout') }}">تسجيل الخروج</a>
                 {% else %}

@@ -87,21 +87,24 @@
             <label>الوصف:</label>
             <textarea name="description"></textarea>
             <label>تاريخ التسليم:</label>
-            <input type="text" name="due_date" placeholder="مثال: 2025-06-21" required>
+            <input type="datetime-local" name="due_date" required>
             <label>الأولوية:</label>
             <select name="priority" required>
                 <option value="عالية">عالية</option>
-                <option value="متوسطة">متوسطة</option>
+                <option value="متوسط" selected>متوسط</option>
                 <option value="منخفضة">منخفضة</option>
             </select>
             <label>تعيين إلى:</label>
-            <select name="assigned_to" required>
-                <option value="">-- اختر مستخدم --</option>
+            <div style="max-height: 200px; overflow-y: auto; border: 1px solid #e0e0e0; border-radius: 7px; padding: 10px; margin-bottom: 18px;">
                 {% for user in users %}
-                    <option value="{{ user.id }}">{{ user.username }}</option>
+                    <div style="margin-bottom: 8px;">
+                        <input type="checkbox" name="assigned_users" value="{{ user.id }}" id="user_{{ user.id }}" style="width: auto; margin-left: 8px;">
+                        <label for="user_{{ user.id }}" style="display: inline; margin-bottom: 0;">{{ user.username }}</label>
+                    </div>
                 {% endfor %}
-            </select>
+            </div>
             <button type="submit">إضافة المهمة</button>
         </form>
     </div>
 </body>
+</html>

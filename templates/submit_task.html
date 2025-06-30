@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}تسليم المهمة{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>تسليم المهمة: {{ task.title }}</h4>
+    </div>
+    <div class="card-body">
+        <div class="task-details">
+            <h5>📋 تفاصيل المهمة</h5>
+            <p><strong>الوصف:</strong> {{ task.description }}</p>
+            <p><strong>تاريخ الاستحقاق:</strong> 
+                <span class="{% if task.due_date < now %}status-late{% else %}status-on-time{% endif %}">
+                    {{ task.due_date.strftime('%Y-%m-%d %H:%M') }}
+                </span>
+            </p>
+            <p><strong>الأولوية:</strong> 
+                <span class="priority-badge priority-{{ task.priority.lower() }}">
+                    {{ task.priority }}
+                </span>
+            </p>
+            <p><strong>الحالة:</strong> 
+                <span class="{% if task.status == 'تم الإنجاز' %}status-on-time{% else %}status-pending{% endif %}">
+                    {{ task.status }}
+                </span>
+            </p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file" class="form-label">📁 اختر الملف:</label>
+                <input type="file" class="form-control" id="file" name="file" required>
+                <div class="form-text">
+                    💡 اسم الملف يجب أن يبدأ باسم المهمة: <strong>{{ task.title }}</strong>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="notes" class="form-label">📝 ملاحظات (اختياري):</label>
+                <textarea class="form-control" id="notes" name="notes" rows="4" 
+                          placeholder="أضف أي ملاحظات أو تعليقات حول التسليم..."></textarea>
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary">
+                    ✅ تسليم المهمة
+                </button>
+                <a href="{{ url_for('my_tasks') }}" class="btn btn-secondary">
+                    ❌ إلغاء
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

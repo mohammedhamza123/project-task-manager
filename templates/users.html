@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}إدارة المستخدمين{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>👥 إدارة المستخدمين</h4>
+    </div>
+    <div class="card-body">
+        <div class="users-grid">
+            {% for user in users %}
+            <div class="user-card">
+                <h3 class="user-name">{{ user.username }}</h3>
+                {% if user.is_admin %}
+                    <span class="admin-badge">مدير</span>
+                {% else %}
+                    <span class="user-badge">مستخدم</span>
+                {% endif %}
+                <div class="user-info">
+                    <p>تاريخ التسجيل: {{ user.created_at.strftime('%Y-%m-%d') }}</p>
+                    <p>عدد المهام المعينة: {{ user.assigned_tasks|length }}</p>
+                    <p>عدد التسليمات: {{ user.submissions|length }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

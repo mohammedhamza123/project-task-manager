@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}المهام المنجزة{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    
+    <div class="header-section">
+        <h1>المهام المنجزة</h1>
+    </div>
+    
+    {% if tasks %}
+        <div class="task-grid">
+            {% for task in tasks %}
+            <div class="task-card completed">
+                <div class="task-header">
+                    <h3 class="task-title">{{ task.title }}</h3>
+                    <span class="task-status completed">تم الإنجاز</span>
+                </div>
+                <p class="task-description">{{ task.description }}</p>
+                <div class="task-meta">
+                    <div class="meta-item">
+                        <span class="label">المشروع:</span>
+                        <span class="value">{{ task.project.title }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">تاريخ التسليم:</span>
+                        <span class="value">{{ task.due_date.strftime('%Y-%m-%d %H:%M') }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">الأولوية:</span>
+                        <span class="priority {{ task.priority.lower() }}">{{ task.priority }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="label">تاريخ الإنشاء:</span>
+                        <span class="value">{{ task.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                    </div>
+                    {% if current_user.is_admin %}
+                        <div class="meta-item">
+                            <span class="label">المستخدمون الموكلة إليهم:</span>
+                            <span class="value">
+                                {% for user in task.assigned_users %}
+                                    {{ user.username }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </span>
+                        </div>
+                    {% endif %}
+                </div>
+                
+                {% if task.submissions %}
+                    <div class="submissions-section">
+                        <h4>التسليمات:</h4>
+                        {% for submission in task.submissions %}
+                        <div class="submission-item">
+                            <span class="submission-user">{{ submission.user.username }}</span>
+                            <span class="submission-date">{{ submission.submitted_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                            <span class="submission-status {{ submission.get_status_display() }}">{{ submission.get_status_display() }}</span>
+                            {% if current_user.is_admin %}
+                                <a href="{{ url_for('download_submission', submission_id=submission.id) }}" class="btn btn-small">تحميل</a>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <h3>لا توجد مهام منجزة</h3>
+            <p>لم يتم إنجاز أي مهام بعد.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %} 

@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}تسليمات المهمة - {{ task.title }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4>📄 تسليمات المهمة - {{ task.title }}</h4>
+            <a href="{{ url_for('my_tasks') }}" class="btn btn-secondary">
+                ← العودة للمهام
+            </a>
+        </div>
+    </div>
+    <div class="card-body">
+        <!-- معلومات المهمة -->
+        <div class="task-info-card">
+            <h5>📋 معلومات المهمة</h5>
+            <div class="task-details">
+                <div class="task-detail-row">
+                    <span class="detail-label">العنوان:</span>
+                    <span class="detail-value">{{ task.title }}</span>
+                </div>
+                <div class="task-detail-row">
+                    <span class="detail-label">الوصف:</span>
+                    <span class="detail-value">{{ task.description or 'لا يوجد وصف' }}</span>
+                </div>
+                <div class="task-detail-row">
+                    <span class="detail-label">الأولوية:</span>
+                    <span class="priority-badge priority-{{ task.priority }}">{{ task.priority }}</span>
+                </div>
+                <div class="task-detail-row">
+                    <span class="detail-label">تاريخ التسليم:</span>
+                    <span class="detail-value">{{ task.due_date.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+                <div class="task-detail-row">
+                    <span class="detail-label">الحالة:</span>
+                    <span class="status-badge status-{{ task.status }}">{{ task.status }}</span>
+                </div>
+                <div class="task-detail-row">
+                    <span class="detail-label">المشروع:</span>
+                    <span class="detail-value">{{ task.project.title }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- قائمة التسليمات -->
+        {% if submissions %}
+            <div class="submissions-section">
+                <h5>📤 التسليمات ({{ submissions|length }})</h5>
+                <div class="submissions-grid">
+                    {% for submission in submissions %}
+                    <div class="submission-card">
+                        <div class="submission-header">
+                            <div class="user-info">
+                                <span class="user-name">{{ submission.user.username }}</span>
+                            </div>
+                            <div class="submission-status">
+                                {% if submission.is_late() %}
+                                    <span class="status-late">⚠️ متأخر</span>
+                                {% else %}
+                                    <span class="status-on-time">✅ في الوقت</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="submission-content">
+                            <div class="file-info">
+                                <span class="file-name">{{ submission.file_name }}</span>
+                                <span class="file-path">{{ submission.file_path.split('/')[-1] }}</span>
+                            </div>
+                            <div class="submission-date">
+                                {{ submission.submitted_at.strftime('%Y-%m-%d %H:%M') }}
+                            </div>
+                            {% if submission.notes %}
+                                <div class="notes-preview">
+                                    {{ submission.notes[:100] }}{% if submission.notes|length > 100 %}...{% endif %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="submission-actions">
+                            <a href="{{ url_for('download_submission', submission_id=submission.id) }}" 
+                               class="btn btn-primary btn-sm">📥 تحميل</a>
+                            {% if submission.notes %}
+                                <button class="btn btn-secondary btn-sm" onclick="showNotes('{{ submission.notes|replace("'", "\\'")|replace('"', '\\"') }}', '{{ submission.user.username }}')">
+                                    📝 ملاحظات
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <h4>لا توجد تسليمات</h4>
+                <p>لم يقم أي مستخدم بتسليم هذه المهمة بعد</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal للملاحظات -->
+<div id="notesModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 id="notesModalTitle">ملاحظات</h5>
+            <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p id="notesModalText"></p>
+        </div>
+    </div>
+</div>
+
+<script>
+function showNotes(notes, username) {
+    document.getElementById('notesModalTitle').textContent = 'ملاحظات ' + username;
+    document.getElementById('notesModalText').textContent = notes;
+    document.getElementById('notesModal').style.display = 'block';
+}
+
+// إغلاق Modal
+document.querySelector('.close').onclick = function() {
+    document.getElementById('notesModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    var modal = document.getElementById('notesModal');
+    if (event.target == modal) {
+        modal.style.display = 'none';
+    }
+}
+</script>
+{% endblock %} 

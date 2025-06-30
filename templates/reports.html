@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}التقارير{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>📊 التقارير والإحصائيات</h4>
+    </div>
+    <div class="card-body">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ total_projects }}</div>
+                <div class="stat-label">إجمالي المشاريع</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number">{{ total_tasks }}</div>
+                <div class="stat-label">إجمالي المهام</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number">{{ completed_tasks }}</div>
+                <div class="stat-label">المهام المكتملة</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-number">{{ pending_tasks }}</div>
+                <div class="stat-label">المهام قيد الإنجاز</div>
+            </div>
+        </div>
+        
+        {% if total_tasks > 0 %}
+        <div class="progress-card">
+            <h3>نسبة إنجاز المهام</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ (completed_tasks / total_tasks * 100) | round(1) }}%"></div>
+            </div>
+            <p class="progress-text">{{ (completed_tasks / total_tasks * 100) | round(1) }}% من المهام مكتملة</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

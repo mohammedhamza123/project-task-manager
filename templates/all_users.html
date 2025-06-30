@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}جميع المستخدمين{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flash">
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+    
+    <div class="header-section">
+        <h1>جميع المستخدمين</h1>
+    </div>
+    
+    <div class="users-grid">
+        {% for user in users %}
+        <div class="user-card">
+            <div class="user-header">
+                <h3 class="user-name">{{ user.username }}</h3>
+                {% if user.is_admin %}
+                    <span class="user-role admin">أدمن</span>
+                {% else %}
+                    <span class="user-role user">مستخدم</span>
+                {% endif %}
+            </div>
+            <div class="user-meta">
+                <div class="meta-item">
+                    <span class="label">تاريخ التسجيل:</span>
+                    <span class="value">{{ user.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="label">المشاريع المشارك فيها:</span>
+                    <span class="value">{{ user.projects|length }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="label">المهام الموكلة:</span>
+                    <span class="value">{{ user.assigned_tasks|length }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="label">التسليمات:</span>
+                    <span class="value">{{ user.submissions|length }}</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

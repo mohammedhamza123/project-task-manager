@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}جميع التسليمات{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h4>جميع التسليمات</h4>
+    </div>
+    <div class="card-body">
+        {% if submissions %}
+        <table>
+            <thead>
+                <tr>
+                    <th>المهمة</th>
+                    <th>المستخدم</th>
+                    <th>اسم الملف</th>
+                    <th>الملاحظات</th>
+                    <th>تاريخ التسليم</th>
+                    <th>تاريخ الاستحقاق</th>
+                    <th>الحالة</th>
+                    <th>الإجراءات</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for submission, task, user in submissions %}
+                <tr>
+                    <td>
+                        <strong>{{ task.title }}</strong><br>
+                        <small style="color: #666; font-size: 0.85rem;">المشروع: {{ task.project.title }}</small>
+                    </td>
+                    <td>
+                        <span style="font-weight: 600; color: rgb(29, 112, 221);">{{ user.username }}</span>
+                    </td>
+                    <td>
+                        <span style="font-family: monospace; background: rgba(29, 112, 221, 0.1); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.9rem;">
+                            {{ submission.file_name }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if submission.notes %}
+                            <div class="notes-preview" title="{{ submission.notes }}">
+                                {{ submission.notes[:50] }}{% if submission.notes|length > 50 %}...{% endif %}
+                            </div>
+                        {% else %}
+                            <span class="notes-empty">لا توجد ملاحظات</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span style="font-weight: 500; color: #2c3e50;">
+                            {{ submission.submitted_at.strftime('%Y-%m-%d') }}
+                        </span><br>
+                        <small style="color: #666; font-size: 0.85rem;">
+                            {{ submission.submitted_at.strftime('%H:%M') }}
+                        </small>
+                    </td>
+                    <td>
+                        <span style="font-weight: 500; color: #2c3e50;">
+                            {{ task.due_date.strftime('%Y-%m-%d') }}
+                        </span><br>
+                        <small style="color: #666; font-size: 0.85rem;">
+                            {{ task.due_date.strftime('%H:%M') }}
+                        </small>
+                    </td>
+                    <td>
+                        {% if submission.is_late() %}
+                            <span class="status-late">
+                                متأخر
+                                {% set late_minutes = submission.get_late_minutes() %}
+                                {% if late_minutes > 0 %}
+                                    <br><small>({{ late_minutes }} دقيقة)</small>
+                                {% endif %}
+                            </span>
+                        {% else %}
+                            <span class="status-on-time">في الوقت</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ url_for('download_submission', submission_id=submission.id) }}" 
+                           class="btn btn-primary" style="padding: 0.5rem 1rem; font-size: 0.9rem;">
+                            📥 تحميل
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div style="text-align: center; padding: 4rem 2rem; color: #666;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">📄</div>
+            <h3 style="color: #2c3e50; margin-bottom: 1rem;">لا توجد تسليمات حتى الآن</h3>
+            <p style="font-size: 1.1rem;">لم يتم تسليم أي مهام بعد</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 
